@@ -16,11 +16,11 @@ export default function SignIn() {
 };
 
 const validationSchema = Yup.object({
-  email: Yup.string()
+email: Yup.string()
     .email('Невірний формат email')
     .required('Email обовʼязковий'),
 
-  password: Yup.string()
+password: Yup.string()
     .min(6, 'Пароль має містити мінімум 6 символів')
     .required('Пароль обовʼязковий'),
 });
