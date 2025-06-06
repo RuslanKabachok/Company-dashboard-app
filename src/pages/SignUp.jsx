@@ -1,9 +1,12 @@
 export default function SignUp() {
     return (
         <div>
-            <input type="text" />
-            <input type="text" />
-            <button>Sign In</button>
+            <h2>Sign Up Page</h2>
+            <form action="">
+                <input type="text" />
+                <input type="text" />
+                <button type="submit">Log In</button>
+            </form>
         </div>
     );
 }
