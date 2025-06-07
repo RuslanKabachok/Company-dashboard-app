@@ -12,7 +12,6 @@ export default function NavBar() {
           <Link to="/signup">Sign Up</Link>
         </li>
       </ul>
-      ,
     </nav>
   );
 }
