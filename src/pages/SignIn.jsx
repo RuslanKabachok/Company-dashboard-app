@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { Formik, Form, Field } from 'formik';
 import * as Yup from "yup";
 // import axios from "axios";
@@ -25,7 +26,6 @@ password: Yup.string()
     .required('Пароль обовʼязковий'),
 });
 
-    
 
     return (
         <div className={css.container}>
@@ -38,7 +38,9 @@ password: Yup.string()
                 <button type="submit">Login</button>
                 </Form>
             </Formik>
-            
+
+            <NavLink to="/reset-password">Forgot password?</NavLink>
+
         </div>
     );
 }
