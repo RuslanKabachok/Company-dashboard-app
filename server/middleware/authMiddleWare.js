@@ -11,7 +11,8 @@ export const verifyToken = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (err) {
-        return res.status(403).json({ message: 'Недійсний токен' });
+        console.error(err.message);
+        return res.status(403).json({ message: 'Недійсний токен', });
     }
 };
 
