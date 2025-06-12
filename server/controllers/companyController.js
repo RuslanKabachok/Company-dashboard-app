@@ -3,11 +3,12 @@ import pool from '../config/db.js';
 export const createCompany = async (req, res) => {
     const { name, service, capital } = req.body;
     const userId = req.user.id;
+    const logoPath = req.file ? req.file.path : null;
 
     try {
         const result = await pool.query(
-            'INSERT INTO companies (user_id, name, service, capital) VALUES ($1, $2, $3, $4) RETURNING *',
-            [userId, name, service, capital]
+            'INSERT INTO companies (user_id, name, service, capital, logo) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [userId, name, service, capital, logoPath]
         );
 
         res.status(201).json({ message: 'Компанію створено', company: result.rows[0] });
