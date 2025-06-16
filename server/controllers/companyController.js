@@ -76,10 +76,11 @@ export const getCompanyById = async (req, res) => {
     }
 }
 
-export const updateComapany = async (req, res) => {
+export const updateCompany = async (req, res) => {
     const companyId = req.params.id;
     const userId = req.user.id;
     const { name, service, capital } = req.body;
+    const logo = req.file ? `uploads/${req.file.filename}` : null;
 
 
     try {
@@ -92,8 +93,8 @@ export const updateComapany = async (req, res) => {
         }
 
         const result = await pool.query(
-            'UPDATE companies SET name = $1, service = $2, capital = $3 WHERE id = $4 RETURNING *',
-            [name, service, capital, companyId]
+            `UPDATE companies SET name = $1, service = $2, capital = $3${logo ? ', logo = $4' : ''} WHERE id = $${logo ? 5 : 4} RETURNING *`,
+            logo ? [name, service, capital, logo, companyId] : [name, service, capital, companyId]
         );
 
         res.status(200).json({
@@ -182,31 +183,3 @@ export const filterAndSortCompanies = async (req, res) => {
         res.status(500).json({ message: 'Не вдалося отримати компанії' });
     }
 }
-
-export const updateCompanyLogo = async (req, res) => {
-    const companyId = req.params.id;
-    const userId = req.user.id;
-    const filePath = req.file ? req.file.path : null;
-
-    try {
-        const existing = await pool.query(
-            'SELECT * FROM companies WHERE id = $1 AND user_id = $2',
-            [companyId, userId]
-        );
-
-        if (existing.rows.length === 0) {
-            return res.status(404).json({ message: 'Компанія не знайдена або немає прав' });
-        }
-
-        await pool.query(
-            'UPDATE companies SET logo = $1 WHERE id = $2',
-            [filePath, companyId]
-        );
-
-        res.status(200).json({ message: 'Логотип оновлено' });
-
-    } catch (error) {
-        console.error('Помилка при оновленні логотипу:', error);
-        res.status(500).json({ message: 'Помилка сервера' });
-    }
-};
