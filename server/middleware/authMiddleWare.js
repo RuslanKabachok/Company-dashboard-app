@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 
 export const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
+
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) return res.status(401).json({ message: 'Токен відсутній' });
@@ -9,8 +10,6 @@ export const authenticateToken = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
-        console.log('Authorization header:', authHeader);
-        console.log('Token:', token);
 
         next();
     } catch (err) {

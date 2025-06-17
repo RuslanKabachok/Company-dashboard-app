@@ -5,7 +5,7 @@ import upload from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
-router.post('/', authenticateToken, createCompany);
+router.post('/', authenticateToken, upload.single('logo'), createCompany);
 router.get('/', authenticateToken, getCompany);
 router.get('/filter', authenticateToken, filterAndSortCompanies);
 router.delete('/:id', authenticateToken, deleteCompany);

@@ -110,22 +110,31 @@ export const updateCompany = async (req, res) => {
 
 export const getUserCompanies = async (req, res) => {
     const userId = req.user.id;
+    const { filter = '', sort = '' } = req.query;
+
+    let query = 'SELECT * FROM companies WHERE user_id = $1';
+    const values = [userId];
+
+    if (filter) {
+        query += ' AND (name ILIKE $2 OR service ILIKE $2)';
+        values.push(`%${filter}%`);
+    }
+
+    if (sort === 'name') {
+        query += ' ORDER BY name ASC';
+    } else if (sort === 'capital') {
+        query += ' ORDER BY capital DESC';
+    }
 
     try {
-        const result = await pool.query(
-            'SELECT * FROM companies WHERE user_id = $1 ORDER BY created_at DESC',
-            [userId]
-        );
-
-        res.status(200).json({
-            message: 'Компанії користувача',
-            companies: result.rows,
-        });
+        const result = await pool.query(query, values);
+        res.status(200).json(result.rows);
     } catch (error) {
         console.error('Помилка при отриманні компаній:', error);
         res.status(500).json({ message: 'Не вдалося отримати компанії' });
     }
-}
+};
+
 
 export const filterAndSortCompanies = async (req, res) => {
     const userId = req.user.id;
