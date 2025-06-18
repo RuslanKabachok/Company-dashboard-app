@@ -16,6 +16,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  console.log('🔗 Запит:', req.method, req.originalUrl);
+  next();
+});
+
+
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/companies', authenticateToken, companyRoutes);

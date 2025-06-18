@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -8,9 +8,11 @@ export default function Companies() {
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('');
 
-  const fetchCompanies = async () => {
+  const fetchCompanies = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
+      console.log('Запит з параметрами:', { filter, sort });
+
       const res = await axios.get('http://localhost:5050/api/companies', {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -20,16 +22,17 @@ export default function Companies() {
           sort,
         },
       });
+
       setCompanies(res.data.companies || []);
     } catch (err) {
       console.error('Помилка при завантаженні компаній:', err);
       setError('Не вдалося завантажити компанії');
     }
-  };
+  }, [filter, sort]);
 
   useEffect(() => {
     fetchCompanies();
-  }, [filter, sort]);
+  }, [fetchCompanies]);
 
   const handleDelete = async (id) => {
     const confirm = window.confirm('Ти впевнений, що хочеш видалити компанію?');
@@ -64,10 +67,8 @@ export default function Companies() {
           <option value="">Сортування</option>
           <option value="name">Назва</option>
           <option value="capital">Капітал</option>
+          <button onClick={fetchCompanies}>Застосувати</button>
         </select>
-
-        {/* ⬇️ Кнопка тепер не обовʼязкова, бо `useEffect` реагує на зміни */}
-        {/* <button onClick={fetchCompanies}>Застосувати</button> */}
       </div>
 
       <h2>Список компаній</h2>

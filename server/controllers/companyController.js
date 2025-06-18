@@ -114,23 +114,28 @@ export const getUserCompanies = async (req, res) => {
 
     let query = 'SELECT * FROM companies WHERE user_id = $1';
     const values = [userId];
+    let index = 2;
 
     if (filter) {
-        query += ' AND (name ILIKE $2 OR service ILIKE $2)';
+        query += ` AND (name ILIKE $${index} OR service ILIKE $${index})`;
         values.push(`%${filter}%`);
+        index++;
     }
 
     if (sort === 'name') {
         query += ' ORDER BY name ASC';
     } else if (sort === 'capital') {
-        query += ' ORDER BY capital DESC';
+        query += ' ORDER BY capital DESC NULLS LAST';
     }
 
     try {
+        console.log('🔍 SQL:', query);
+        console.log('📦 values:', values);
+
         const result = await pool.query(query, values);
-        res.status(200).json(result.rows);
+        res.status(200).json({ companies: result.rows });
     } catch (error) {
-        console.error('Помилка при отриманні компаній:', error);
+        console.error('❌ Помилка при отриманні компаній:', error);
         res.status(500).json({ message: 'Не вдалося отримати компанії' });
     }
 };
