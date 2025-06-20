@@ -112,34 +112,36 @@ export const getUserCompanies = async (req, res) => {
     const userId = req.user.id;
     const { filter = '', sort = '' } = req.query;
 
-    let query = 'SELECT * FROM companies WHERE user_id = $1';
-    const values = [userId];
-    let index = 2;
-
-    if (filter) {
-        query += ` AND (name ILIKE $${index} OR service ILIKE $${index})`;
-        values.push(`%${filter}%`);
-        index++;
-    }
-
-    if (sort === 'name') {
-        query += ' ORDER BY name ASC';
-    } else if (sort === 'capital') {
-        query += ' ORDER BY capital DESC NULLS LAST';
-    }
-
     try {
-        console.log('🔍 SQL:', query);
-        console.log('📦 values:', values);
+        let query = `
+      SELECT * FROM companies 
+      WHERE user_id = $1
+    `;
+        const values = [userId];
+        let i = 2;
+
+        if (filter) {
+            query += ` AND (name ILIKE $${i} OR service ILIKE $${i})`;
+            values.push(`%${filter}%`);
+            i++;
+        }
+
+        if (sort === 'name') {
+            query += ' ORDER BY name ASC';
+        } else if (sort === 'capital') {
+            query += ' ORDER BY capital DESC NULLS LAST';
+        }
 
         const result = await pool.query(query, values);
+
         res.status(200).json({ companies: result.rows });
     } catch (error) {
-        console.error('❌ Помилка при отриманні компаній:', error);
-        res.status(500).json({ message: 'Не вдалося отримати компанії' });
+        console.error('❌ DB error:', error);
+        if (!res.headersSent) {
+            res.status(500).json({ message: 'Не вдалося отримати компанії' });
+        }
     }
 };
-
 
 export const filterAndSortCompanies = async (req, res) => {
     const userId = req.user.id;

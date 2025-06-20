@@ -1,12 +1,11 @@
 import express from 'express';
-import { createCompany, getCompany, deleteCompany, getCompanyById, updateCompany, getUserCompanies, filterAndSortCompanies } from '../controllers/companyController.js';
+import { createCompany, deleteCompany, getCompanyById, updateCompany, filterAndSortCompanies, getUserCompanies } from '../controllers/companyController.js';
 import { authenticateToken } from '../middleware/authMiddleWare.js';
 import upload from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
 router.post('/', authenticateToken, upload.single('logo'), createCompany);
-router.get('/', authenticateToken, getCompany);
 router.get('/filter', authenticateToken, filterAndSortCompanies);
 router.delete('/:id', authenticateToken, deleteCompany);
 router.get('/:id', authenticateToken, getCompanyById);

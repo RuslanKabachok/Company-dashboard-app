@@ -9,10 +9,10 @@ export default function Companies() {
   const [sort, setSort] = useState('');
 
   const fetchCompanies = useCallback(async () => {
+    console.log('Запит з параметрами:', { filter, sort });
+
     try {
       const token = localStorage.getItem('token');
-      console.log('Запит з параметрами:', { filter, sort });
-
       const res = await axios.get('http://localhost:5050/api/companies', {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export default function Companies() {
 
   useEffect(() => {
     fetchCompanies();
-  }, [fetchCompanies]);
+  }, [fetchCompanies, filter, sort]);
 
   const handleDelete = async (id) => {
     const confirm = window.confirm('Ти впевнений, що хочеш видалити компанію?');
@@ -63,12 +63,18 @@ export default function Companies() {
           onChange={(e) => setFilter(e.target.value)}
         />
 
-        <select value={sort} onChange={(e) => setSort(e.target.value)}>
+        <select
+          value={sort}
+          onChange={(e) => {
+            setSort(e.target.value);
+            console.log('🟡 Обране сортування:', e.target.value);
+          }}
+        >
           <option value="">Сортування</option>
           <option value="name">Назва</option>
           <option value="capital">Капітал</option>
-          <button onClick={fetchCompanies}>Застосувати</button>
         </select>
+        <button onClick={fetchCompanies}>Застосувати</button>
       </div>
 
       <h2>Список компаній</h2>
