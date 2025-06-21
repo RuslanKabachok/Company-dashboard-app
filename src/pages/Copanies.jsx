@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Companies() {
@@ -7,6 +7,15 @@ export default function Companies() {
   const [error, setError] = useState('');
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('');
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/signin');
+    }
+  }, [navigate]);
 
   const fetchCompanies = useCallback(async () => {
     console.log('Запит з параметрами:', { filter, sort });
@@ -86,7 +95,24 @@ export default function Companies() {
           {companies.map((company) => (
             <li key={company.id}>
               <strong>{company.name}</strong> — {company.service} —{' '}
-              {company.capital}$
+              {company.capital?.toLocaleString('uk-UA')} ₴
+              {company.logo && (
+                <div>
+                  <img
+                    src={`http://localhost:5050/${company.logo}`}
+                    alt="Логотип компанії"
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      objectFit: 'cover',
+                      marginRight: '10px',
+                    }}
+                  />
+                </div>
+              )}
+              <Link to={`/companies/${company.id}/edit`}>
+                <button style={{ marginLeft: '10px' }}>Редагувати</button>
+              </Link>
               <button onClick={() => handleDelete(company.id)}>Видалити</button>
             </li>
           ))}

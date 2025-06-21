@@ -3,7 +3,8 @@ import pool from '../config/db.js';
 export const createCompany = async (req, res) => {
     const { name, service, capital } = req.body;
     const userId = req.user.id;
-    const logoPath = req.file ? req.file.path : null;
+    // const logoPath = req.file ? req.file.path : null;
+    const logoPath = req.file ? `uploads/${req.file.filename}` : null;
 
     try {
         const result = await pool.query(
@@ -82,19 +83,52 @@ export const updateCompany = async (req, res) => {
     const { name, service, capital } = req.body;
     const logo = req.file ? `uploads/${req.file.filename}` : null;
 
-
     try {
+        // Перевірка на наявність компанії
         const check = await pool.query(
             'SELECT * FROM companies WHERE id = $1 AND user_id = $2',
             [companyId, userId]
         );
+
         if (check.rows.length === 0) {
             return res.status(403).json({ message: 'Компанію не знайдено або доступ заборонено' });
         }
 
+        // Динамічна побудова запиту
+        const updates = [];
+        const values = [];
+        let i = 1;
+
+        if (name !== undefined) {
+            updates.push(`name = $${i++}`);
+            values.push(name);
+        }
+
+        if (service !== undefined) {
+            updates.push(`service = $${i++}`);
+            values.push(service);
+        }
+
+        if (capital !== undefined) {
+            updates.push(`capital = $${i++}`);
+            values.push(capital);
+        }
+
+        if (logo !== null) {
+            updates.push(`logo = $${i++}`);
+            values.push(logo);
+        }
+
+        // Якщо немає що оновлювати
+        if (updates.length === 0) {
+            return res.status(400).json({ message: 'Немає даних для оновлення' });
+        }
+
+        values.push(companyId, userId);
+
         const result = await pool.query(
-            `UPDATE companies SET name = $1, service = $2, capital = $3${logo ? ', logo = $4' : ''} WHERE id = $${logo ? 5 : 4} RETURNING *`,
-            logo ? [name, service, capital, logo, companyId] : [name, service, capital, companyId]
+            `UPDATE companies SET ${updates.join(', ')} WHERE id = $${i++} AND user_id = $${i} RETURNING *`,
+            values
         );
 
         res.status(200).json({
@@ -106,7 +140,7 @@ export const updateCompany = async (req, res) => {
         console.error('Помилка при оновленні компанії:', error);
         res.status(500).json({ message: 'Не вдалося оновити компанію' });
     }
-}
+};
 
 export const getUserCompanies = async (req, res) => {
     const userId = req.user.id;

@@ -11,6 +11,23 @@ export default function NavBar() {
         <li>
           <Link to="/signup">Sign Up</Link>
         </li>
+        <button
+          onClick={() => {
+            localStorage.removeItem('token');
+            window.location.href = '/signin';
+          }}
+          style={{
+            marginBottom: '10px',
+            padding: '8px 12px',
+            background: '#f44336',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Вийти
+        </button>
       </ul>
     </nav>
   );

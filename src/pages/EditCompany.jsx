@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function EditCompany() {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: '',
     service: '',
@@ -24,7 +26,7 @@ export default function EditCompany() {
           },
         );
 
-        const { name, service, capital } = res.data.company;
+        const { name, service, capital } = res.data;
         setFormData((prev) => ({
           ...prev,
           name,
@@ -52,12 +54,12 @@ export default function EditCompany() {
 
     const token = localStorage.getItem('token');
     const data = new FormData();
-    data.append('name', formData.name);
-    data.append('service', formData.service);
-    data.append('capital', formData.capital);
-    if (formData.logo) {
-      data.append('logo', formData.logo);
-    }
+
+    // Додаємо тільки якщо значення існує
+    if (formData.name) data.append('name', formData.name);
+    if (formData.service) data.append('service', formData.service);
+    if (formData.capital) data.append('capital', formData.capital);
+    if (formData.logo) data.append('logo', formData.logo);
 
     try {
       await axios.put(`http://localhost:5050/api/companies/${id}`, data, {
@@ -68,6 +70,7 @@ export default function EditCompany() {
       });
 
       alert('Компанію оновлено');
+      navigate('/companies');
     } catch (error) {
       console.error('Помилка при оновленні компанії:', error);
       alert('Не вдалося оновити компанію');
@@ -76,10 +79,34 @@ export default function EditCompany() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input name="name" value={formData.name} onChange={handleChange} />
-      <input name="service" value={formData.service} onChange={handleChange} />
-      <input name="capital" value={formData.capital} onChange={handleChange} />
-      <input type="file" name="logo" onChange={handleChange} />
+      <label>
+        Назва компанії:
+        <input name="name" value={formData.name} onChange={handleChange} />
+      </label>
+
+      <label>
+        Сфера діяльності:
+        <input
+          name="service"
+          value={formData.service}
+          onChange={handleChange}
+        />
+      </label>
+
+      <label>
+        Капітал:
+        <input
+          name="capital"
+          value={formData.capital}
+          onChange={handleChange}
+        />
+      </label>
+
+      <label>
+        Логотип:
+        <input type="file" name="logo" onChange={handleChange} />
+      </label>
+
       <button type="submit">Оновити компанію</button>
     </form>
   );
