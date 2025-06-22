@@ -5,7 +5,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import companyRoutes from './routes/companyRoutes.js'
+import companyRoutes from './routes/companyRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 import { authenticateToken } from '.././server/middleware/authMiddleWare.js';
 
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/companies', authenticateToken, companyRoutes);
 
 app.get('/', (req, res) => {

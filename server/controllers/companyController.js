@@ -3,7 +3,6 @@ import pool from '../config/db.js';
 export const createCompany = async (req, res) => {
     const { name, service, capital } = req.body;
     const userId = req.user.id;
-    // const logoPath = req.file ? req.file.path : null;
     const logoPath = req.file ? `uploads/${req.file.filename}` : null;
 
     try {
@@ -149,7 +148,7 @@ export const getUserCompanies = async (req, res) => {
     try {
         let query = `
       SELECT * FROM companies 
-      WHERE user_id = $1
+        WHERE user_id = $1
     `;
         const values = [userId];
         let i = 2;

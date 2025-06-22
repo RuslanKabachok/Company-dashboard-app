@@ -6,6 +6,7 @@ import NavBar from './pages/NavBar';
 import EditCompany from './pages/EditCompany';
 import Companies from './pages/Copanies';
 import CreateCompany from './pages/CreateCompany';
+import AdminPage from './pages/AdminPage';
 import './App.module.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/companies/:id/edit" element={<EditCompany />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/companies/create" element={<CreateCompany />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
   );

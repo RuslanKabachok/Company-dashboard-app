@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getUserRole } from '../utils/auth';
 
 export default function Companies() {
   const [companies, setCompanies] = useState([]);
@@ -64,6 +65,7 @@ export default function Companies() {
 
   return (
     <div>
+      {getUserRole() === 'admin' && <Link to="/admin">Перейти до адмінки</Link>}
       <div>
         <input
           type="text"
