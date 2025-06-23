@@ -1,7 +1,7 @@
-export const checkRole = (role) => {
+export const checkRole = (...allowedRoles) => {
     return (req, res, next) => {
-        if (req.user.role !== role) {
-            return res.status(403).json({ message: 'Доступ заборонено' });
+        if (!allowedRoles.includes(req.user.role)) {
+            return res.status(403).json({ message: 'Недостатньо прав доступу' });
         }
         next();
     };

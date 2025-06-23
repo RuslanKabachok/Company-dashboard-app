@@ -16,6 +16,27 @@ router.get('/all', authenticateToken, checkRole('admin'), async (req, res) => {
         res.status(500).json({ message: 'Помилка при отриманні користувачів' });
     }
 });
+router.get('/companies', authenticateToken, checkRole('admin'), async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM companies');
+        res.json({ companies: result.rows });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: 'Помилка при отриманні компаній' });
+    }
+});
+router.get('/all',
+    authenticateToken,
+    checkRole(['admin', 'superadmin']),
+    async (req, res) => {
+        // ...
+    });
+router.post('/create-admin',
+    authenticateToken,
+    checkRole(['superadmin']),
+    async (req, res) => {
+        // створення нового адміна
+    });
 
 
 export default router;

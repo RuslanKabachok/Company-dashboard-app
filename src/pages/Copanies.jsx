@@ -65,7 +65,10 @@ export default function Companies() {
 
   return (
     <div>
-      {getUserRole() === 'admin' && <Link to="/admin">Перейти до адмінки</Link>}
+      {(getUserRole() === 'admin' || getUserRole() === 'superadmin') && (
+        <Link to="/admin">Перейти до адмінки</Link>
+      )}
+
       <div>
         <input
           type="text"

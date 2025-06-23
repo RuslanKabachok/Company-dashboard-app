@@ -10,7 +10,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     const role = getUserRole();
-    if (role !== 'admin') {
+    if (role !== 'admin' && role !== 'superadmin') {
       navigate('/companies');
     }
 
@@ -19,8 +19,8 @@ export default function AdminPage() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const [usersRes, companiesRes] = await Promise.all([
-        axios.get('http://localhost:5050/api/user', { headers }),
-        axios.get('http://localhost:5050/api/companies/all', { headers }),
+        axios.get('http://localhost:5050/api/user/all', { headers }),
+        axios.get('http://localhost:5050/api/user/companies', { headers }),
       ]);
 
       setUsers(usersRes.data.users || []);
