@@ -35,23 +35,23 @@ export const getCompany = async (req, res) => {
 
 export const deleteCompany = async (req, res) => {
     const userId = req.user.id;
+    const userRole = req.user.role;
     const companyId = req.params.id;
 
     try {
-        const result = await pool.query(
-            'SELECT * FROM companies WHERE id = $1 AND user_id = $2',
-            [companyId, userId]
-        );
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: 'Компанію не знайдено або доступ заборонено' });
+        const result = await pool.query('SELECT * FROM companies WHERE id = $1', [companyId]);
+        const company = result.rows[0];
+        if (!company) return res.status(404).json({ message: 'Компанію не знайдено' });
+
+        if (company.user_id !== userId && userRole !== 'superadmin') {
+            return res.status(403).json({ message: 'Немає доступу' });
         }
 
         await pool.query('DELETE FROM companies WHERE id = $1', [companyId]);
-
         res.status(200).json({ message: 'Компанію видалено' });
     } catch (error) {
-        console.error('Помилка при видаленні компанії:', error);
-        res.status(500).json({ message: 'Не вдалося видалити компанію' });
+        console.error('❌ Помилка при видаленні компанії:', error);
+        res.status(500).json({ message: 'Щось пішло не так' });
     }
 }
 

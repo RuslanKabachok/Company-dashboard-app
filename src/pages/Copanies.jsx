@@ -63,6 +63,8 @@ export default function Companies() {
     }
   };
 
+  console.log('👤 Роль користувача:', getUserRole());
+
   return (
     <div>
       {(getUserRole() === 'admin' || getUserRole() === 'superadmin') && (

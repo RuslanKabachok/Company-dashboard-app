@@ -13,7 +13,6 @@ router.delete('/:id', authenticateToken, deleteCompany);
 router.get('/:id', authenticateToken, getCompanyById);
 router.put('/:id', authenticateToken, upload.single('logo'), updateCompany);
 router.get('/', authenticateToken, getUserCompanies);
-
 router.get('/all', authenticateToken, checkRole('admin'), async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM companies');
@@ -23,6 +22,5 @@ router.get('/all', authenticateToken, checkRole('admin'), async (req, res) => {
         res.status(500).json({ message: 'Помилка при отриманні компаній' });
     }
 });
-
 
 export default router;
