@@ -60,58 +60,41 @@ export default function SignUp() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
-          <Form className={css.form}>
-            <label>
-              Імʼя:
-              <Field type="text" name="name" />
-              <ErrorMessage name="name" component="div" className={css.error} />
-            </label>
+        <Form className={css.form}>
+          <label className={css.label}>
+            Імʼя:
+            <Field type="text" name="name" />
+            <ErrorMessage name="name" component="div" className={css.error} />
+          </label>
 
-            <label>
-              Email:
-              <Field type="email" name="email" />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className={css.error}
-              />
-            </label>
+          <label className={css.label}>
+            Email:
+            <Field type="email" name="email" />
+            <ErrorMessage name="email" component="div" className={css.error} />
+          </label>
 
-            <label>
-              Пароль:
-              <Field type="password" name="password" />
-              <ErrorMessage
-                name="password"
-                component="div"
-                className={css.error}
-              />
-            </label>
+          <label className={css.label}>
+            Пароль:
+            <Field type="password" name="password" />
+            <ErrorMessage
+              name="password"
+              component="div"
+              className={css.error}
+            />
+          </label>
 
-            <label>
-              Підтвердження паролю:
-              <Field type="password" name="confirmPassword" />
-              <ErrorMessage
-                name="confirmPassword"
-                component="div"
-                className={css.error}
-              />
-            </label>
+          <label className={css.label}>
+            Підтвердження паролю:
+            <Field type="password" name="confirmPassword" />
+            <ErrorMessage
+              name="confirmPassword"
+              component="div"
+              className={css.error}
+            />
+          </label>
 
-            <label>
-              Role:
-              <Field as="select" name="role">
-                <option value="user">User</option>
-                <option value="admin">Admin</option>{' '}
-                {/* 👈 тільки для демонстрації */}
-              </Field>
-            </label>
-
-            <button type="submit" disabled={isSubmitting}>
-              Зареєструватися
-            </button>
-          </Form>
-        )}
+          <button type="submit">Зареєструватися</button>
+        </Form>
       </Formik>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import css from './CreateCompany.module.css';
 
 export default function CreateCompany() {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ export default function CreateCompany() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={css.form}>
       <h2>Додати компанію</h2>
       <input
         type="text"

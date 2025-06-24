@@ -4,30 +4,29 @@ import css from './NavBar.module.css';
 export default function NavBar() {
   return (
     <nav className={css.nav}>
-      <ul>
+      <ul className={css.navList}>
         <li>
-          <Link to="/signin">Sign In</Link>
+          <Link to="/signin" className={css.navItem}>
+            Sign In
+          </Link>
         </li>
         <li>
-          <Link to="/signup">Sign Up</Link>
+          <Link to="/signup" className={css.navItem}>
+            Sign Up
+          </Link>
         </li>
-        <button
-          onClick={() => {
-            localStorage.removeItem('token');
-            window.location.href = '/signin';
-          }}
-          style={{
-            marginBottom: '10px',
-            padding: '8px 12px',
-            background: '#f44336',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-        >
-          Вийти
-        </button>
+        <li>
+          <Link
+            to="/signin"
+            onClick={() => {
+              localStorage.removeItem('token');
+              window.location.href = '/signin';
+            }}
+            className={css.navItem}
+          >
+            Вийти
+          </Link>
+        </li>
       </ul>
     </nav>
   );

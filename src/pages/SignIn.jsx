@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import css from './SignIn.module.css';
+import css from './SignUp.module.css';
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -28,9 +28,8 @@ export default function SignIn() {
         password: values.password,
       });
 
-      localStorage.setItem('token', res.data.token); // 🟢 Збереження токена
+      localStorage.setItem('token', res.data.token);
 
-      // ✅ Переадресація на головну або на сторінку компаній
       navigate('/companies');
     } catch (error) {
       console.error('Помилка при логіні', error);
@@ -51,7 +50,7 @@ export default function SignIn() {
       >
         {({ isSubmitting }) => (
           <Form className={css.form}>
-            <label>
+            <label className={css.label}>
               E-mail:
               <Field type="email" name="email" />
               <ErrorMessage
@@ -61,7 +60,7 @@ export default function SignIn() {
               />
             </label>
 
-            <label>
+            <label className={css.label}>
               Password:
               <Field type="password" name="password" />
               <ErrorMessage
