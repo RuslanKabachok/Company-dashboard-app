@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import css from './EditCompany.module.css';
 
 export default function EditCompany() {
   const { id } = useParams();
@@ -55,7 +56,6 @@ export default function EditCompany() {
     const token = localStorage.getItem('token');
     const data = new FormData();
 
-    // Додаємо тільки якщо значення існує
     if (formData.name) data.append('name', formData.name);
     if (formData.service) data.append('service', formData.service);
     if (formData.capital) data.append('capital', formData.capital);
@@ -78,36 +78,55 @@ export default function EditCompany() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Назва компанії:
-        <input name="name" value={formData.name} onChange={handleChange} />
-      </label>
+    <div className={css.container}>
+      <h2>Редагувати компанію</h2>
+      <form className={css.form} onSubmit={handleSubmit}>
+        <label>
+          Назва компанії:
+          <input
+            className={css.input}
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </label>
 
-      <label>
-        Сфера діяльності:
-        <input
-          name="service"
-          value={formData.service}
-          onChange={handleChange}
-        />
-      </label>
+        <label>
+          Сфера діяльності:
+          <input
+            className={css.input}
+            name="service"
+            value={formData.service}
+            onChange={handleChange}
+          />
+        </label>
 
-      <label>
-        Капітал:
-        <input
-          name="capital"
-          value={formData.capital}
-          onChange={handleChange}
-        />
-      </label>
+        <label>
+          Капітал:
+          <input
+            className={css.input}
+            type="number"
+            name="capital"
+            value={formData.capital}
+            onChange={handleChange}
+          />
+        </label>
 
-      <label>
-        Логотип:
-        <input type="file" name="logo" onChange={handleChange} />
-      </label>
+        <label>
+          Логотип:
+          <input
+            className={css.input}
+            type="file"
+            name="logo"
+            onChange={handleChange}
+          />
+        </label>
 
-      <button type="submit">Оновити компанію</button>
-    </form>
+        <button className={css.button} type="submit">
+          Оновити компанію
+        </button>
+      </form>
+    </div>
   );
 }

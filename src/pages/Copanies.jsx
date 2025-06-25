@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getUserRole } from '../utils/auth';
+import css from './Companies.module.css';
 
 export default function Companies() {
   const [companies, setCompanies] = useState([]);
@@ -19,8 +20,6 @@ export default function Companies() {
   }, [navigate]);
 
   const fetchCompanies = useCallback(async () => {
-    console.log('Запит з параметрами:', { filter, sort });
-
     try {
       const token = localStorage.getItem('token');
       const res = await axios.get('http://localhost:5050/api/companies', {
@@ -63,15 +62,15 @@ export default function Companies() {
     }
   };
 
-  console.log('👤 Роль користувача:', getUserRole());
-
   return (
-    <div>
+    <div className={css.container}>
       {(getUserRole() === 'admin' || getUserRole() === 'superadmin') && (
-        <Link to="/admin">Перейти до адмінки</Link>
+        <Link to="/admin" className={css.adminLink}>
+          Перейти до адмінки
+        </Link>
       )}
 
-      <div>
+      <div className={css.controls}>
         <input
           type="text"
           placeholder="Пошук..."
@@ -83,7 +82,6 @@ export default function Companies() {
           value={sort}
           onChange={(e) => {
             setSort(e.target.value);
-            console.log('🟡 Обране сортування:', e.target.value);
           }}
         >
           <option value="">Сортування</option>
@@ -117,15 +115,27 @@ export default function Companies() {
                   />
                 </div>
               )}
-              <Link to={`/companies/${company.id}/edit`}>
-                <button style={{ marginLeft: '10px' }}>Редагувати</button>
-              </Link>
-              <button onClick={() => handleDelete(company.id)}>Видалити</button>
+              <div style={{ marginTop: '8px' }}>
+                <Link
+                  to={`/companies/${company.id}/edit`}
+                  className={css.linkButton}
+                >
+                  Редагувати
+                </Link>
+                <button
+                  onClick={() => handleDelete(company.id)}
+                  className={css.deleteBtn}
+                >
+                  Видалити
+                </button>
+              </div>
             </li>
           ))}
         </ul>
       )}
-      <Link to="/companies/create">+ Додати компанію</Link>
+      <Link to="/companies/create" className={css.linkButton}>
+        + Додати компанію
+      </Link>
     </div>
   );
 }

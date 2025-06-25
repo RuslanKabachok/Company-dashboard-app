@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getUserRole } from '../utils/auth';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import css from './AdminPage.module.css';
 
 export default function AdminPage() {
   const [users, setUsers] = useState([]);
@@ -12,8 +13,6 @@ export default function AdminPage() {
   useEffect(() => {
     const r = getUserRole();
     setRole(r);
-
-    console.log('🔍 Перевірка ролі у AdminPage:', r);
 
     if (r !== 'admin' && r !== 'superadmin') {
       navigate('/companies');
@@ -92,52 +91,60 @@ export default function AdminPage() {
   if (!role) return <p>⏳ Завантаження...</p>;
 
   return (
-    <div>
-      <h2>🔐 Admin Panel</h2>
+    <div className={css.container}>
+      <h2 className={css.heading}>🔐 Admin Panel</h2>
 
-      <h3>👥 Користувачі:</h3>
-      <ul>
-        {users.map((u) => (
-          <li key={u.id}>
-            {u.email} — <strong>{u.role}</strong>
-            {role === 'superadmin' && (
-              <>
-                <select
-                  value={u.role}
-                  onChange={(e) => handleRoleChange(u.id, e.target.value)}
-                  style={{ marginLeft: '10px' }}
-                >
-                  <option value="user">user</option>
-                  <option value="admin">admin</option>
-                </select>
+      <section className={css.section}>
+        <h3>👥 Користувачі:</h3>
+        <ul className={css.list}>
+          {users.map((u) => (
+            <li key={u.id} className={css.item}>
+              <span>
+                {u.email} — <strong>{u.role}</strong>
+              </span>
+              {role === 'superadmin' && (
+                <div className={css.controls}>
+                  <select
+                    value={u.role}
+                    onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                    className={css.select}
+                  >
+                    <option value="user">user</option>
+                    <option value="admin">admin</option>
+                  </select>
+                  <button
+                    onClick={() => handleDeleteUser(u.id)}
+                    className={css.deleteBtn}
+                  >
+                    🗑 Видалити
+                  </button>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className={css.section}>
+        <h3>🏢 Компанії:</h3>
+        <ul className={css.list}>
+          {companies.map((c) => (
+            <li key={c.id} className={css.item}>
+              <span>
+                {c.name} — {c.service} — {c.capital?.toLocaleString('uk-UA')} ₴
+              </span>
+              {role === 'superadmin' && (
                 <button
-                  onClick={() => handleDeleteUser(u.id)}
-                  style={{ marginLeft: '10px' }}
+                  onClick={() => handleDeleteCompany(c.id)}
+                  className={css.deleteBtn}
                 >
                   🗑 Видалити
                 </button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
-
-      <h3>🏢 Компанії:</h3>
-      <ul>
-        {companies.map((c) => (
-          <li key={c.id}>
-            {c.name} — {c.service} — {c.capital?.toLocaleString('uk-UA')} ₴
-            {role === 'superadmin' && (
-              <button
-                onClick={() => handleDeleteCompany(c.id)}
-                style={{ marginLeft: '10px' }}
-              >
-                🗑 Видалити
-              </button>
-            )}
-          </li>
-        ))}
-      </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }

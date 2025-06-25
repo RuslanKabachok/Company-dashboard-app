@@ -7,6 +7,7 @@ import EditCompany from './pages/EditCompany';
 import Companies from './pages/Copanies';
 import CreateCompany from './pages/CreateCompany';
 import AdminPage from './pages/AdminPage';
+import ResetPasswordForm from './pages/ResetPasswordForm';
 import './App.module.css';
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
         <Route path="/companies" element={<Companies />} />
         <Route path="/companies/create" element={<CreateCompany />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
       </Routes>
     </BrowserRouter>
   );
