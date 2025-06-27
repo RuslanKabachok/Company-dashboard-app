@@ -12,7 +12,7 @@ import './App.module.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Company-dashboard-app">
       <NavBar />
 
       <Routes>
