@@ -83,7 +83,6 @@ export const updateCompany = async (req, res) => {
     const logo = req.file ? `uploads/${req.file.filename}` : null;
 
     try {
-        // Перевірка на наявність компанії
         const check = await pool.query(
             'SELECT * FROM companies WHERE id = $1 AND user_id = $2',
             [companyId, userId]
@@ -93,7 +92,6 @@ export const updateCompany = async (req, res) => {
             return res.status(403).json({ message: 'Компанію не знайдено або доступ заборонено' });
         }
 
-        // Динамічна побудова запиту
         const updates = [];
         const values = [];
         let i = 1;
@@ -118,7 +116,6 @@ export const updateCompany = async (req, res) => {
             values.push(logo);
         }
 
-        // Якщо немає що оновлювати
         if (updates.length === 0) {
             return res.status(400).json({ message: 'Немає даних для оновлення' });
         }

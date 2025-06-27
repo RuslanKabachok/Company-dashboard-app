@@ -7,6 +7,8 @@ import css from './SignUp.module.css';
 export default function SignUp() {
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_BASE_URL;
+
   const initialValues = {
     name: '',
     email: '',
@@ -30,7 +32,7 @@ export default function SignUp() {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const res = await axios.post('http://localhost:5050/api/auth/signup', {
+      const res = await axios.post(`${API}api/auth/signup`, {
         name: values.name,
         email: values.email,
         password: values.password,

@@ -8,18 +8,17 @@ const validationSchema = Yup.object({
   password: Yup.string().min(6, 'Мінімум 6 символів').required('Обовʼязково'),
 });
 
+const API = import.meta.env.VITE_API_BASE_URL;
+
 export default function ResetPasswordForm() {
   const { token } = useParams();
   const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
     try {
-      await axios.post(
-        `http://localhost:5050/api/auth/reset-password/${token}`,
-        {
-          password: values.password,
-        },
-      );
+      await axios.post(`${API}api/auth/reset-password/${token}`, {
+        password: values.password,
+      });
 
       alert('Пароль успішно змінено');
       navigate('/signin');

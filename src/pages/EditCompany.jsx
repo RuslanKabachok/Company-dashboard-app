@@ -14,18 +14,17 @@ export default function EditCompany() {
     logo: null,
   });
 
+  const API = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     const fetchCompany = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(
-          `http://localhost:5050/api/companies/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const res = await axios.get(`${API}api/companies/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
 
         const { name, service, capital } = res.data;
         setFormData((prev) => ({
@@ -62,7 +61,7 @@ export default function EditCompany() {
     if (formData.logo) data.append('logo', formData.logo);
 
     try {
-      await axios.put(`http://localhost:5050/api/companies/${id}`, data, {
+      await axios.put(`${API}api/companies/${id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

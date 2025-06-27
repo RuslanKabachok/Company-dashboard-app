@@ -12,6 +12,8 @@ export default function CreateCompany() {
     logo: null,
   });
 
+  const API = import.meta.env.VITE_API_BASE_URL;
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -33,7 +35,7 @@ export default function CreateCompany() {
     }
 
     try {
-      await axios.post('http://localhost:5050/api/companies', data, {
+      await axios.post(`${API}api/companies`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

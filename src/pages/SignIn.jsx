@@ -12,6 +12,8 @@ export default function SignIn() {
     password: '',
   };
 
+  const API = import.meta.env.VITE_API_BASE_URL;
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .email('Невірний формат email')
@@ -23,7 +25,7 @@ export default function SignIn() {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
-      const res = await axios.post('http://localhost:5050/api/auth/login', {
+      const res = await axios.post(`${API}api/auth/login`, {
         email: values.email,
         password: values.password,
       });

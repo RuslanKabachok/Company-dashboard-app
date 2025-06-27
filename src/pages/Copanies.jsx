@@ -19,10 +19,12 @@ export default function Companies() {
     }
   }, [navigate]);
 
+  const API = import.meta.env.VITE_API_BASE_URL;
+
   const fetchCompanies = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5050/api/companies', {
+      const res = await axios.get(`${API}api/companies`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -49,7 +51,7 @@ export default function Companies() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5050/api/companies/${id}`, {
+      await axios.delete(`${API}api/companies/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

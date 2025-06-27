@@ -10,6 +10,8 @@ const validationSchema = Yup.object({
     .required('Email обовʼязковий'),
 });
 
+const API = import.meta.env.VITE_API_BASE_URL;
+
 export default function ResetPassword() {
   const initialValues = { email: '' };
   const [success, setSuccess] = useState('');
@@ -19,12 +21,9 @@ export default function ResetPassword() {
     setSuccess('');
     setError('');
     try {
-      const res = await axios.post(
-        'http://localhost:5050/api/auth/reset-password',
-        {
-          email: values.email,
-        },
-      );
+      const res = await axios.post(`${API}api/auth/reset-password`, {
+        email: values.email,
+      });
 
       setSuccess(res.data.message);
     } catch (err) {

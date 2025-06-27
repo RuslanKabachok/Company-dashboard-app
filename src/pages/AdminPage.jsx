@@ -39,11 +39,13 @@ export default function AdminPage() {
     fetchData();
   }, []);
 
+  const API = import.meta.env.VITE_API_BASE_URL;
+
   const handleRoleChange = async (userId, newRole) => {
     const token = localStorage.getItem('token');
     try {
       const res = await axios.put(
-        `http://localhost:5050/api/user/role/${userId}`,
+        `${API}api/user/role/${userId}`,
         { role: newRole },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -63,7 +65,7 @@ export default function AdminPage() {
 
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`http://localhost:5050/api/user/${userId}`, {
+      await axios.delete(`${API}api/user/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers((prev) => prev.filter((u) => u.id !== userId));
@@ -78,7 +80,7 @@ export default function AdminPage() {
 
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`http://localhost:5050/api/companies/${companyId}`, {
+      await axios.delete(`${API}api/companies/${companyId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCompanies((prev) => prev.filter((c) => c.id !== companyId));
