@@ -12,7 +12,7 @@ export default function SignIn() {
     password: '',
   };
 
-  const API = import.meta.env.VITE_API_BASE_URL;
+  const API = import.meta.env.VITE_API_BASE;
 
   const validationSchema = Yup.object({
     email: Yup.string()

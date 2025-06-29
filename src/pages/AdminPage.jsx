@@ -39,7 +39,7 @@ export default function AdminPage() {
     fetchData();
   }, []);
 
-  const API = import.meta.env.VITE_API_BASE_URL;
+  const API = import.meta.env.VITE_API_BASE;
 
   const handleRoleChange = async (userId, newRole) => {
     const token = localStorage.getItem('token');

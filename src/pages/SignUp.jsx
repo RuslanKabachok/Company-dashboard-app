@@ -7,7 +7,7 @@ import css from './SignUp.module.css';
 export default function SignUp() {
   const navigate = useNavigate();
 
-  const API = import.meta.env.VITE_API_BASE_URL;
+  const API = import.meta.env.VITE_API_BASE;
 
   const initialValues = {
     name: '',

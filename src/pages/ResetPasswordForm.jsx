@@ -8,7 +8,7 @@ const validationSchema = Yup.object({
   password: Yup.string().min(6, 'Мінімум 6 символів').required('Обовʼязково'),
 });
 
-const API = import.meta.env.VITE_API_BASE_URL;
+const API = import.meta.env.VITE_API_BASE;
 
 export default function ResetPasswordForm() {
   const { token } = useParams();

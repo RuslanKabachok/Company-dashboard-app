@@ -10,7 +10,7 @@ const validationSchema = Yup.object({
     .required('Email обовʼязковий'),
 });
 
-const API = import.meta.env.VITE_API_BASE_URL;
+const API = import.meta.env.VITE_API_BASE;
 
 export default function ResetPassword() {
   const initialValues = { email: '' };

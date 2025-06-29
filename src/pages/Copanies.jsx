@@ -19,7 +19,7 @@ export default function Companies() {
     }
   }, [navigate]);
 
-  const API = import.meta.env.VITE_API_BASE_URL;
+  const API = import.meta.env.VITE_API_BASE;
 
   const fetchCompanies = useCallback(async () => {
     try {
