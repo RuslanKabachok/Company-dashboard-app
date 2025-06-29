@@ -10,6 +10,8 @@ export default function AdminPage() {
   const [companies, setCompanies] = useState([]);
   const navigate = useNavigate();
 
+  const API = import.meta.env.VITE_API_BASE;
+
   useEffect(() => {
     const r = getUserRole();
     setRole(r);
@@ -25,8 +27,8 @@ export default function AdminPage() {
         const headers = { Authorization: `Bearer ${token}` };
 
         const [usersRes, companiesRes] = await Promise.all([
-          axios.get('http://localhost:5050/api/user/all', { headers }),
-          axios.get('http://localhost:5050/api/user/companies', { headers }),
+          axios.get(`${API}api/user/all`, { headers }),
+          axios.get(`${API}api/user/companies`, { headers }),
         ]);
 
         setUsers(usersRes.data.users || []);
@@ -38,8 +40,6 @@ export default function AdminPage() {
 
     fetchData();
   }, []);
-
-  const API = import.meta.env.VITE_API_BASE;
 
   const handleRoleChange = async (userId, newRole) => {
     const token = localStorage.getItem('token');

@@ -13,7 +13,6 @@ function App() {
   return (
     <BrowserRouter basename="/Company-dashboard-app">
       <NavBar />
-
       <Routes>
         <Route path="/" element={<Companies />} />
         <Route path="/signin" element={<SignIn />} />
