@@ -8,7 +8,6 @@ import Companies from './pages/Copanies';
 import CreateCompany from './pages/CreateCompany';
 import AdminPage from './pages/AdminPage';
 import ResetPasswordForm from './pages/ResetPasswordForm';
-import './App.module.css';
 
 function App() {
   return (
