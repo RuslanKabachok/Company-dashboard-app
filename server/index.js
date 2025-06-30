@@ -21,11 +21,19 @@ const PORT = process.env.PORT || 5050;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const allowedOrigin = process.env.CLIENT_ORIGIN;
+
+if (!allowedOrigin) {
+  console.error('❌ CLIENT_ORIGIN не визначено. Перевір .env!');
+  process.exit(1); // зупинимо запуск, щоб не отримати помилку далі
+}
+
 app.use(cors({
-  origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  origin: allowedOrigin,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
