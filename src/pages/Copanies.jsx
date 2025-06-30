@@ -43,6 +43,8 @@ export default function Companies() {
 
   useEffect(() => {
     fetchCompanies();
+    const token = localStorage.getItem('token');
+    console.log('🟢 Token:', token); // додай
   }, [fetchCompanies, filter, sort]);
 
   const handleDelete = async (id) => {
