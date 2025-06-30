@@ -82,10 +82,10 @@ export const registerUser = async (req, res) => {
 
 export const login = async (req, res) => {
     const { email, password } = req.body;
+    console.log('📥 req.body:', req.body);
 
     try {
         const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-        console.log('📥 req.body:', req.body);
 
         if (user.rows.length === 0) {
             return res.status(400).json({ message: 'Невірна електронна пошта або пароль' });
