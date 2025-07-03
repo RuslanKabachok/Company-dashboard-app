@@ -25,6 +25,8 @@ export default function SignIn() {
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
+      console.log('📤 Логін дані:', values);
+
       const res = await axios.post(`${API}api/auth/login`, {
         email: values.email,
         password: values.password,

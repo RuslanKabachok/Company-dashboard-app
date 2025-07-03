@@ -25,7 +25,7 @@ const allowedOrigin = process.env.CLIENT_ORIGIN;
 
 if (!allowedOrigin) {
   console.error('❌ CLIENT_ORIGIN не визначено. Перевір .env!');
-  process.exit(1); // зупинимо запуск, щоб не отримати помилку далі
+  process.exit(1);
 }
 
 app.use(cors({
